@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel La Perouse - Booking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* 1. Global Reset & Body Styling */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            /* Using a placeholder image from Unsplash. You can swap this back to your local image. */
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 2. Main Container - The "Glass" Card */
+        .billing_system {
+            background: rgba(255, 255, 255, 0.95);
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            text-align: left;
+        }
+
+        h2 {
+            color: #1a2a6c; /* Deep Blue */
+            margin-bottom: 25px;
+            font-weight: 600;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #fdbb2d; /* Gold accent */
+            padding-bottom: 10px;
+        }
+
+        /* 3. Input & Select Styling */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        select, input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        select:focus, input[type="number"]:focus {
+            border-color: #1a2a6c;
+            outline: none;
+        }
+
+        /* 4. Checkbox Option Styling (The attractive part) */
+        .option-row {
+            display: flex;
+            align-items: center;
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #eee;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .option-row:hover {
+            background: #eef2ff; /* Light blue tint on hover */
+            border-color: #1a2a6c;
+        }
+
+        .option-row input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            accent-color: #1a2a6c; /* Makes the checkbox blue */
+            cursor: pointer;
+        }
+
+        .option-row span {
+            font-size: 14px;
+            color: #555;
+            flex-grow: 1;
+        }
+
+        .price-tag {
+            font-weight: bold;
+            color: #1a2a6c;
+            font-size: 12px;
+        }
+
+        /* 5. Button Styling */
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 20px;
+            background: linear-gradient(to right, #1a2a6c, #b21f1f);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(26, 42, 108, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(26, 42, 108, 0.6);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* 6. Invoice / Receipt Styling */
+        h3 {
+            text-align: center;
+            margin-top: 30px;
+            color: #333;
+        }
+
+        #invoiceOutput {
+            background-color: #fcfcfc;
+            border: 2px dashed #ccc;
+            padding: 20px;
+            margin-top: 10px;
+            border-radius: 10px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #333;
+            display: none; /* Hidden until calculated */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="billing_system">
+        <h2>Hotel La Perouse</h2>
+
+        <div class="form-group">
+            <label for="roomType">Select Room Type</label>
+            <select id="roomType">
+                <option value="single">Single ($1,000/night)</option>
+                <option value="double">Double ($5,000/night)</option>
+                <option value="suite">Suite ($25,000/night)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="nights">Duration of Stay</label>
+            <input id="nights" type="number" value="1" min="1" placeholder="Enter number of nights">
+        </div>
+
+        <label>Extras</label>
+        
+        <label class="option-row" for="breakfast">
+            <input type="checkbox" id="breakfast">
+            <span>Daily Breakfast</span>
+            <span class="price-tag">$200/day</span>
+        </label>
+
+        <label class="option-row" for="airport">
+            <input type="checkbox" id="airport">
+            <span>Airport Pickup</span>
+            <span class="price-tag">$800</span>
+        </label>
+
+        <label class="option-row" for="laundary">
+            <input type="checkbox" id="laundary">
+            <span>Laundry Service</span>
+            <span class="price-tag">$150</span>
+        </label>
+
+        <button id="calculateBtn">Calculate Total Bill</button>
+
+        <h3>Invoice Summary</h3>
+        <div id="invoiceOutput"></div>
+    </div>
+
+    <script>
+        const roomType = document.getElementById('roomType');
+        const nights = document.getElementById('nights');
+        const breakfast = document.getElementById('breakfast');
+        const airport = document.getElementById('airport');
+        const laundary = document.getElementById('laundary');
+        const invoiceOutput = document.getElementById('invoiceOutput');
+        const calculateBtn = document.getElementById('calculateBtn');
+
+        const roomPrices = {
+            single: 1000,
+            double: 5000,
+            suite: 25000,
+        };
+
+        calculateBtn.addEventListener('click', function () {
+            const n = Number(nights.value);
+            
+            // Basic validation
+            if (Number.isNaN(n) || n < 1) {
+                invoiceOutput.style.display = 'block';
+                invoiceOutput.style.color = 'red';
+                invoiceOutput.textContent = 'Please enter a valid number of nights (minimum 1).';
+                return;
+            }
+
+            // Calculation Logic
+            const selectedRoom = roomType.value;
+            const roomRate = roomPrices[selectedRoom];
+            const roomCost = roomRate * n;
+
+            // Breakfast is per day * number of nights
+            const breakfastCost = breakfast.checked ? 200 * n : 0;
+            
+            // Laundry and Airport are one-time costs in this logic
+            const laundaryCost = laundary.checked ? 150 : 0;
+            const airportCost = airport.checked ? 800 : 0;
+            
+            const subtotal = roomCost + breakfastCost + airportCost + laundaryCost;
+            const tax = Math.round(subtotal * 0.12);
+            const grandTotal = subtotal + tax;
+
+            // Formatting the output
+            let txt = '';
+            txt += `Room Type:      ${selectedRoom.toUpperCase()} @ ${roomRate}/night\n`;
+            txt += `Nights:         ${n}\n`;
+            txt += `--------------------------------\n`;
+            txt += `Room Cost:      ₹${roomCost}\n`;
+            
+            if(breakfast.checked) txt += `Breakfast:      ₹${breakfastCost} (${n} days)\n`;
+            if(airport.checked)   txt += `Airport Pickup: ₹${airportCost}\n`;
+            if(laundary.checked)  txt += `Laundry:        ₹${laundaryCost}\n`;
+            
+            txt += `--------------------------------\n`;
+            txt += `Subtotal:       ₹${subtotal}\n`;
+            txt += `Tax (12%):      ₹${tax}\n`;
+            txt += `================================\n`;
+            txt += `GRAND TOTAL:    ₹${grandTotal}\n`;
+
+            // Display result
+            invoiceOutput.style.display = 'block';
+            invoiceOutput.style.color = '#333';
+            invoiceOutput.innerText = txt;
+        });
+    </script>
+</body>
+</html>
